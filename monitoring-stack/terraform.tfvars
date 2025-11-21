@@ -1,4 +1,4 @@
-linode_token = "6275387583f52eb8d41225bc9394acef84c207c0190712e4375ae329511c536f"
+linode_token  = "6275387583f52eb8d41225bc9394acef84c207c0190712e4375ae329511c536f"
 linode_region = "us-east"
 
 environment = "dev"
