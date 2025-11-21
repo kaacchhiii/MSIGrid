@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
           storageSpec = {
             volumeClaimTemplate = {
               spec = {
-                storageClassName = "gp2"
+                storageClassName = "linode-block-storage-retain"
                 accessModes      = ["ReadWriteOnce"]
                 resources = {
                   requests = {
@@ -42,9 +42,6 @@ resource "helm_release" "prometheus" {
         }
         service = {
           type = "LoadBalancer"
-          annotations = {
-            "service.beta.kubernetes.io/aws-load-balancer-type" = "nlb"
-          }
         }
       }
 
@@ -53,7 +50,7 @@ resource "helm_release" "prometheus" {
           storage = {
             volumeClaimTemplate = {
               spec = {
-                storageClassName = "gp2"
+                storageClassName = "linode-block-storage-retain"
                 accessModes      = ["ReadWriteOnce"]
                 resources = {
                   requests = {
@@ -76,9 +73,6 @@ resource "helm_release" "prometheus" {
         }
         service = {
           type = "LoadBalancer"
-          annotations = {
-            "service.beta.kubernetes.io/aws-load-balancer-type" = "nlb"
-          }
         }
       }
 
@@ -113,22 +107,6 @@ resource "helm_release" "prometheus" {
   depends_on = [kubernetes_namespace.monitoring]
 
   timeout = 600
-}
-
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type        = string
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-}
-
-variable "prometheus_namespace" {
-  description = "Kubernetes namespace for Prometheus"
-  type        = string
-  default     = "monitoring"
 }
 
 output "prometheus_service_name" {

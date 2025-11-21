@@ -11,7 +11,7 @@ resource "helm_release" "grafana" {
 
       persistence = {
         enabled          = true
-        storageClassName = "gp2"
+        storageClassName = "linode-block-storage-retain"
         size             = "10Gi"
       }
 
@@ -28,9 +28,6 @@ resource "helm_release" "grafana" {
 
       service = {
         type = "LoadBalancer"
-        annotations = {
-          "service.beta.kubernetes.io/aws-load-balancer-type" = "nlb"
-        }
         port = 80
       }
 
@@ -143,18 +140,6 @@ resource "kubernetes_config_map" "custom_dashboard" {
   depends_on = [kubernetes_namespace.monitoring]
 }
 
-variable "grafana_admin_password" {
-  description = "Admin password for Grafana"
-  type        = string
-  sensitive   = true
-  default     = "admin123"
-}
-
-variable "grafana_namespace" {
-  description = "Kubernetes namespace for Grafana"
-  type        = string
-  default     = "monitoring"
-}
 
 output "grafana_service_name" {
   description = "Name of the Grafana service"

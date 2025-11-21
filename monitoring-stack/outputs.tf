@@ -1,31 +1,22 @@
-output "cluster_endpoint" {
-  description = "Endpoint for EKS control plane"
-  value       = module.eks.cluster_endpoint
+output "kubeconfig" {
+  description = "Kubeconfig for the LKE cluster"
+  value       = module.lke.kubeconfig
+  sensitive   = true
 }
 
-output "cluster_security_group_id" {
-  description = "Security group ID attached to the EKS cluster"
-  value       = module.eks.cluster_security_group_id
+output "api_endpoints" {
+  description = "API endpoints for the LKE cluster"
+  value       = module.lke.api_endpoints
 }
 
-output "cluster_iam_role_name" {
-  description = "IAM role name associated with EKS cluster"
-  value       = module.eks.cluster_iam_role_name
+output "cluster_status" {
+  description = "Status of the LKE cluster"
+  value       = module.lke.status
 }
 
-output "cluster_certificate_authority_data" {
-  description = "Base64 encoded certificate data required to communicate with the cluster"
-  value       = module.eks.cluster_certificate_authority_data
-}
-
-output "cluster_version" {
-  description = "The Kubernetes version for the EKS cluster"
-  value       = module.eks.cluster_version
-}
-
-output "node_groups" {
-  description = "EKS node groups"
-  value       = module.eks.node_groups
+output "pool_id" {
+  description = "ID of the node pool"
+  value       = module.lke.pool_id
 }
 
 output "prometheus_service_url" {
@@ -36,25 +27,4 @@ output "prometheus_service_url" {
 output "grafana_service_url" {
   description = "URL for Grafana service"
   value       = module.helm.grafana_service_url
-}
-
-output "grafana_admin_credentials_secret" {
-  description = "Name of the secret containing Grafana admin credentials"
-  value       = module.ssm.grafana_admin_secret_name
-  sensitive   = true
-}
-
-output "vpc_id" {
-  description = "ID of the VPC"
-  value       = module.eks.vpc_id
-}
-
-output "private_subnets" {
-  description = "List of private subnet IDs"
-  value       = module.eks.private_subnets
-}
-
-output "public_subnets" {
-  description = "List of public subnet IDs"
-  value       = module.eks.public_subnets
 }
