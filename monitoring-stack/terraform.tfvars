@@ -4,7 +4,7 @@ linode_region = "us-east"
 environment = "dev"
 
 cluster_name = "monitoring-cluster"
-k8s_version  = "1.30"
+k8s_version  = "1.32"
 node_type    = "g6-standard-2"
 node_count   = 3
 
