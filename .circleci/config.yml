@@ -1,0 +1,80 @@
+version: 2.1
+
+orbs:
+  terraform: circleci/terraform@3.2.1
+
+workflows:
+  terraform-workflow:
+    jobs:
+      - terraform-plan:
+          filters:
+            branches:
+              only: /.*/
+      - terraform-apply:
+          requires:
+            - terraform-plan
+          filters:
+            branches:
+              only: main
+
+jobs:
+  terraform-plan:
+    docker:
+      - image: hashicorp/terraform:1.8.5
+    working_directory: ~/project/monitoring-stack
+    steps:
+      - checkout:
+          path: ~/project
+      
+      - run:
+          name: Configure Linode credentials
+          command: |
+            echo "export LINODE_TOKEN=${LINODE_TOKEN}" >> $BASH_ENV
+            source $BASH_ENV
+      
+      - run:
+          name: Terraform Format Check
+          command: terraform fmt -check -recursive
+      
+      - run:
+          name: Terraform Init
+          command: terraform init
+      
+      - run:
+          name: Terraform Validate
+          command: terraform validate
+      
+      - run:
+          name: Terraform Plan
+          command: terraform plan -no-color
+      
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - monitoring-stack/.terraform
+            - monitoring-stack/.terraform.lock.hcl
+
+  terraform-apply:
+    docker:
+      - image: hashicorp/terraform:1.8.5
+    working_directory: ~/project/monitoring-stack
+    steps:
+      - checkout:
+          path: ~/project
+      
+      - attach_workspace:
+          at: ~/project
+      
+      - run:
+          name: Configure Linode credentials
+          command: |
+            echo "export LINODE_TOKEN=${LINODE_TOKEN}" >> $BASH_ENV
+            source $BASH_ENV
+      
+      - run:
+          name: Terraform Init
+          command: terraform init
+      
+      - run:
+          name: Terraform Apply
+          command: terraform apply -auto-approve
