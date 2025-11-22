@@ -38,7 +38,22 @@ monitoring-stack/
     └── custom-alert-rules.yaml # Prometheus alert rules
 ```
 
-## 🚀 Getting Started
+## � CI/CD Pipeline
+
+This project uses **CircleCI** for continuous integration and deployment:
+
+- **Automated Testing**: `terraform fmt`, `terraform validate`, and `terraform plan` run on every push
+- **Auto-deployment**: Changes to `main` branch automatically apply to infrastructure
+- **Branch Protection**: Feature branches only run plan (no apply)
+
+**CircleCI Configuration**: `.circleci/config.yml`
+
+### Required Secrets
+
+Add these environment variables in CircleCI project settings:
+- `LINODE_TOKEN` - Your Linode API token
+
+## �🚀 Getting Started
 
 ### Prerequisites
 
@@ -57,7 +72,7 @@ linode_region = "us-east"               # Choose your region
 
 environment = "dev"
 cluster_name = "monitoring-cluster"
-k8s_version  = "1.27"
+k8s_version  = "1.32"                # Supported: 1.32, 1.33, 1.34
 node_type    = "g6-standard-2"          # 2 CPU, 4GB RAM
 node_count   = 3
 
