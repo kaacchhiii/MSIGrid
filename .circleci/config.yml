@@ -76,5 +76,14 @@ jobs:
           command: terraform init
       
       - run:
+          name: Destroy Previous Infrastructure
+          command: terraform destroy -auto-approve || true
+      
+      - run:
           name: Terraform Apply
           command: terraform apply -auto-approve
+      
+      - run:
+          name: Cleanup on Failure
+          command: terraform destroy -auto-approve
+          when: on_fail
