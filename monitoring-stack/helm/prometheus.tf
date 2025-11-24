@@ -18,7 +18,7 @@ resource "helm_release" "prometheus" {
           storageSpec = {
             volumeClaimTemplate = {
               spec = {
-                storageClassName = "linode-block-storage-retain"
+                storageClassName = "linode-block-storage"
                 accessModes      = ["ReadWriteOnce"]
                 resources = {
                   requests = {
@@ -31,12 +31,12 @@ resource "helm_release" "prometheus" {
           retention = "15d"
           resources = {
             limits = {
-              cpu    = "2000m"
-              memory = "8Gi"
+              cpu    = "1000m"
+              memory = "2Gi"
             }
             requests = {
-              cpu    = "1000m"
-              memory = "4Gi"
+              cpu    = "500m"
+              memory = "1Gi"
             }
           }
         }
@@ -50,7 +50,7 @@ resource "helm_release" "prometheus" {
           storage = {
             volumeClaimTemplate = {
               spec = {
-                storageClassName = "linode-block-storage-retain"
+                storageClassName = "linode-block-storage"
                 accessModes      = ["ReadWriteOnce"]
                 resources = {
                   requests = {
@@ -107,6 +107,7 @@ resource "helm_release" "prometheus" {
   depends_on = [kubernetes_namespace.monitoring]
 
   timeout = 600
+  wait    = false
 }
 
 output "prometheus_service_name" {

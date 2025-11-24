@@ -11,7 +11,7 @@ resource "helm_release" "grafana" {
 
       persistence = {
         enabled          = true
-        storageClassName = "linode-block-storage-retain"
+        storageClassName = "linode-block-storage"
         size             = "10Gi"
       }
 
