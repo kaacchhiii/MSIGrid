@@ -1,5 +1,9 @@
+resource "random_id" "cluster_suffix" {
+  byte_length = 4
+}
+
 resource "linode_lke_cluster" "main" {
-  label       = var.cluster_name
+  label       = "${var.cluster_name}-${random_id.cluster_suffix.hex}"
   k8s_version = var.k8s_version
   region      = var.linode_region
   tags        = [var.environment]
