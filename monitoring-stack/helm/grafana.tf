@@ -17,12 +17,12 @@ resource "helm_release" "grafana" {
 
       resources = {
         limits = {
-          cpu    = "200m"
-          memory = "256Mi"
+          cpu    = "500m"
+          memory = "512Mi"
         }
         requests = {
-          cpu    = "100m"
-          memory = "128Mi"
+          cpu    = "250m"
+          memory = "256Mi"
         }
       }
 
@@ -121,7 +121,8 @@ resource "helm_release" "grafana" {
     helm_release.prometheus
   ]
 
-  timeout = 300
+  timeout = 900
+  wait    = false
 }
 
 resource "kubernetes_config_map" "custom_dashboard" {
